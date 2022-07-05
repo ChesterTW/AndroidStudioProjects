@@ -15,14 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.yellow,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(Key? key) : super(key: key);
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -31,7 +29,102 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(),
+        appBar: AppBar(
+          title: const Text("動物百科"),
+        ),
+        backgroundColor: Colors.white70,
+        body: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: _buildBox(),
+            )
+          ],
+        ));
+  }
+
+  Widget _buildBox() {
+    return Container(
+      width: double.infinity,
+      height: 560,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25.0),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 250,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+              image: DecorationImage(
+                image: AssetImage('images/BengalTiger.jpeg'),
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  IconButton(
+                    icon: Icon(Icons.description),
+                    iconSize: 30.0,
+                    onPressed: null,
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    iconSize: 30.0,
+                    onPressed: null,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  IconButton(
+                    icon: Icon(Icons.bookmark),
+                    iconSize: 30.0,
+                    onPressed: null,
+                  )
+                ],
+              )
+            ],
+          ),
+          Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Row(
+                        children: const [
+                          Text(
+                            "BengalTiger",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Text(
+                      "孟加拉虎（學名：Panthera tigris tigris）[1][2]又名印度虎，是目前數量最多，分布最廣的虎的亞種，1758年，孟加拉虎成為瑞典自然學家卡爾·林奈為老虎命名時的模式標本，因而也就成了指名亞種。孟加拉虎主要分布在印度和孟加拉國。孟加拉虎也是這兩個國家的珍稀動物。",
+                      style: TextStyle(fontSize: 16),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
