@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("動物百科"),
+          title: const Text("Animal Wiki"),
         ),
         backgroundColor: Colors.white70,
         body: ListView(
@@ -71,15 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
                   IconButton(
-                    icon: Icon(Icons.description),
+                    icon: Icon(Icons.description_outlined),
                     iconSize: 30.0,
                     onPressed: null,
                   ),
                   SizedBox(
-                    width: 20.0,
+                    width: 5.0,
                   ),
                   IconButton(
-                    icon: Icon(Icons.send),
+                    icon: Icon(Icons.share_outlined),
                     iconSize: 30.0,
                     onPressed: null,
                   ),
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: const [
                   IconButton(
-                    icon: Icon(Icons.bookmark),
+                    icon: Icon(Icons.bookmark_border_outlined),
                     iconSize: 30.0,
                     onPressed: null,
                   )
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: Row(
                         children: const [
                           Text(
@@ -114,10 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     ),
-                    const Text(
-                      "孟加拉虎（學名：Panthera tigris tigris）[1][2]又名印度虎，是目前數量最多，分布最廣的虎的亞種，1758年，孟加拉虎成為瑞典自然學家卡爾·林奈為老虎命名時的模式標本，因而也就成了指名亞種。孟加拉虎主要分布在印度和孟加拉國。孟加拉虎也是這兩個國家的珍稀動物。",
-                      style: TextStyle(fontSize: 16),
-                    )
+                    const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Text(
+                            "孟加拉虎（學名：Panthera tigris tigris）[1][2]又名印度虎，是目前數量最多，分布最廣的虎的亞種，1758年，孟加拉虎成為瑞典自然學家卡爾·林奈為老虎命名時的模式標本，因而也就成了指名亞種。孟加拉虎主要分布在印度和孟加拉國。孟加拉虎也是這兩個國家的珍稀動物。")),
                   ],
                 ),
               )
