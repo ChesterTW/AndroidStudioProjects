@@ -96,15 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               buildImage(imgPath),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: buttonSection(),
-              ),
-              Column(
-                children: const [
-                  Divider(),
-                ],
-              ),
+              buttonSection(),
+              const Divider(),
               buildContext(chName, enName, description)
             ],
           ),
@@ -175,18 +168,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /// buttonSection，呼叫多個 Column 方法 buildButtonColumn，並做出多個「按鈕欄」，
-  /// 並使用 MainAxisAlignment.spaceEvenly，
-  /// 將其平均分散，
+  /// buttonSection，負責組合出「按鈕列」，
+  /// 呼叫多個 Column 方法 buildButtonColumn，以獲取「按鈕欄」，
+  /// 並使用 MainAxisAlignment.spaceEvenly，將其平均分散，
   /// 並包在 Row 中 return。
   Widget buttonSection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        buildButtonColumn(Icons.description, '詳情'),
-        buildButtonColumn(Icons.share, '分享'),
-        buildButtonColumn(Icons.bookmark_border, '收藏'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildButtonColumn(Icons.description, '詳情'),
+          buildButtonColumn(Icons.share, '分享'),
+          buildButtonColumn(Icons.bookmark_border, '收藏'),
+        ],
+      ),
     );
   }
 }
