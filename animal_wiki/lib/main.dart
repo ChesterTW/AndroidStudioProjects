@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
+  /// 跳轉「收藏頁」，會被 AppBar 的 IconButton 呼叫。
   void _enterBookmarks() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return Scaffold(
@@ -185,4 +186,43 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+/// Animal 類型
+class Animal {
+  /// 類型 Animal 的建構式
+  Animal({
+    required this.chName,
+    required this.enName,
+    required this.description,
+    required this.img,
+  });
+
+  /// 宣告 String 類型的 chName，負責接收「中文名稱」。
+  final String chName;
+
+  /// 宣告 String 類型的 enName，負責接收「英文名稱」。
+  final String enName;
+
+  /// 宣告 String 類型的 description，負責接收「簡介」。
+  final String description;
+
+  /// 宣告 String 類型的 img，負責接收「圖片路徑」。
+  final String img;
+
+  /// 接收 Json 檔，將裡頭的數值定義給對應的「變數」。
+  factory Animal.fromJson(Map<String, dynamic> json) => Animal(
+        chName: json["name"],
+        enName: json["enName"],
+        description: json["description"],
+        img: json["img"],
+      );
+
+  /// 發送 Json 檔，將「變數的值」輸入於對應的欄位中。
+  Map<String, dynamic> toJson() => {
+        "name": chName,
+        "enName": enName,
+        "description": description,
+        "img": img,
+      };
 }
