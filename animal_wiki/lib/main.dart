@@ -56,11 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.grey[300],
         body: ListView(
           children: [
-            buildCard("images/BengalTiger.jpeg", "孟加拉虎", "BengalTiger",
+            _buildCard("images/BengalTiger.jpeg", "孟加拉虎", "BengalTiger",
                 "孟加拉虎（學名：Panthera tigris tigris）[1][2]又名印度虎，是目前數量最多，分布最廣的虎的亞種，1758年，孟加拉虎成為瑞典自然學家卡爾·林奈為老虎命名時的模式標本，因而也就成了指名亞種。孟加拉虎主要分布在印度和孟加拉國。孟加拉虎也是這兩個國家的珍稀動物。"),
-            buildCard("images/otter.jpeg", "水獺", "Otter",
+            _buildCard("images/otter.jpeg", "水獺", "Otter",
                 "水獺是一類水棲、肉食性的哺乳動物，在動物分類學中屬於食肉目鼬科下的亞科級別，稱為水獺亞科（Lutrinae），現存七個屬及十三個物種。"),
-            buildCard("images/Slowpoke.png", "呆呆獸", "Slowpoke",
+            _buildCard("images/Slowpoke.png", "呆呆獸", "Slowpoke",
                 "呆呆獸是第一世代的寶可夢。 呆呆獸會用尾巴在水邊釣魚，根據設定，當大舌貝咬住呆呆獸的尾巴時，它就會進化成呆殼獸。 在動畫和旁支系列遊戲中存在這一情節，但在主系列遊戲中呆呆獸的進化與大舌貝無關。"),
           ],
         ));
@@ -84,8 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 引數有四個，皆為 String 類型：imgPath, chName, enName, description，
   /// 當中使用到了一些方法：有 Container buildImage，和 Column buildContext, buildSection。
   /// 而本 Widget ，最終，會把各方法的回傳值組合起，並 return 為 Padding。
-  Widget buildCard(
+  Widget _buildCard(
       String imgPath, String chName, String enName, String description) {
+    //throw Exception();
     return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
         child: Container(
@@ -96,10 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: Column(
             children: [
-              buildImage(imgPath),
-              buttonSection(),
+              _buildImage(imgPath),
+              _buttonSection(),
               const Divider(),
-              buildContext(chName, enName, description)
+              _buildContext(chName, enName, description)
             ],
           ),
         ));
@@ -111,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 包在 Container 中 return，
   /// 而其中使用到很多的屬性 decoration，
   /// 以讓它有好看的圓角，並且完美貼合在 Container 中。
-  Container buildImage(String imgPath) {
+  Widget _buildImage(String imgPath) {
     return Container(
       width: double.infinity,
       height: 250,
@@ -128,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// buildContext，負責創建外頁的「內容」，
   /// 接收三個 String 引數，分別為「中英文名稱」和「簡介」，
   /// 而最終會回傳成 Column。
-  Column buildContext(String chName, String enName, String description) {
+  Widget _buildContext(String chName, String enName, String description) {
     return Column(
       children: [
         ListTile(
@@ -148,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Colors.yellow[900]
   /// MainAxisSize.min
   /// MainAxisAlignment.center
-  Column buildButtonColumn(IconData icon, String label) {
+  Widget _buildButtonColumn(IconData icon, String label) {
     Color? color = Colors.yellow[900];
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -173,15 +174,15 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 呼叫多個 Column 方法 buildButtonColumn，以獲取「按鈕欄」，
   /// 並使用 MainAxisAlignment.spaceEvenly，將其平均分散，
   /// 並包在 Row 中 return。
-  Widget buttonSection() {
+  Widget _buttonSection() {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildButtonColumn(Icons.description, '詳情'),
-          buildButtonColumn(Icons.share, '分享'),
-          buildButtonColumn(Icons.bookmark_border, '收藏'),
+          _buildButtonColumn(Icons.description, '詳情'),
+          _buildButtonColumn(Icons.share, '分享'),
+          _buildButtonColumn(Icons.bookmark_border, '收藏'),
         ],
       ),
     );
@@ -196,6 +197,7 @@ class Animal {
     required this.enName,
     required this.description,
     required this.img,
+    required this.saved,
   });
 
   /// 宣告 String 類型的 chName，負責接收「中文名稱」。
@@ -210,12 +212,16 @@ class Animal {
   /// 宣告 String 類型的 img，負責接收「圖片路徑」。
   final String img;
 
+  /// 宣告 bool 類型的 saved，負責儲存「是否存儲的狀態」。
+  final bool saved;
+
   /// 接收 Json 檔，將裡頭的數值定義給對應的「變數」。
   factory Animal.fromJson(Map<String, dynamic> json) => Animal(
         chName: json["name"],
         enName: json["enName"],
         description: json["description"],
         img: json["img"],
+        saved: json["saved"],
       );
 
   /// 發送 Json 檔，將「變數的值」輸入於對應的欄位中。
@@ -224,5 +230,6 @@ class Animal {
         "enName": enName,
         "description": description,
         "img": img,
+        "saved": saved,
       };
 }
