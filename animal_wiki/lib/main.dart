@@ -88,18 +88,33 @@ class _MyHomePageState extends State<MyHomePage> {
       String imgPath, String chName, String enName, String description) {
     //throw Exception();
     return Padding(
+        // Padding : 設置左上右方向為 16.0，底部為 4.0，讓 _buildCard 與螢幕邊界擁有距離，
+        // 以凸顯 ListView 的滑動感，
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
         child: Container(
+          // 寬度設置：無限
           width: double.infinity,
           decoration: BoxDecoration(
+            // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
             color: Colors.white,
+            // 讓每張 _buildCard 都有好看的四個圓角
             borderRadius: BorderRadius.circular(25.0),
           ),
+          // 使用 Column，以擁有「豎向」排版。
           child: Column(
             children: [
+              /// 負責外頁的「圖片」
+              /// Return ClipRRect, Child : Image
               _buildImage(imgPath),
+
+              /// 負責外頁的「按鈕列」
+              /// Return Row, Children : 三個 buttonColumn
               _buttonSection(),
+
+              /// 我是可愛的分隔線，負責將「按鈕列」、「文字」區分開來。
               const Divider(),
+
+              /// 負責外頁的「中英文名稱」、「簡介」。
               _buildContext(chName, enName, description)
             ],
           ),
@@ -109,19 +124,17 @@ class _MyHomePageState extends State<MyHomePage> {
   /// buildImage，負責產生外頁的「圖片」，
   /// 接收引數為 String 類型的變數 imgPath，
   /// 以此作為尋找「圖片」的路徑，最終會將「圖片」，
-  /// 包在 Container 中 return，
-  /// 而其中使用到很多的屬性 decoration，
-  /// 以讓它有好看的圓角，並且完美貼合在 Container 中。
+  /// 包在 ClipRRect 中 return。
   Widget _buildImage(String imgPath) {
-    return Container(
-      width: double.infinity,
-      height: 250,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(25.0)),
-        image: DecorationImage(
-          image: AssetImage(imgPath),
-          fit: BoxFit.fill,
-        ),
+    return ClipRRect(
+      // 設置邊界半徑：豎向排列（設定頂列為 25.0）
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(25.0)),
+      // child : 給予 Image
+      child: Image(
+        // 透過 ImageProvider 讀取圖片，使用 String imgPath 中儲存的「圖片路徑」。
+        image: AssetImage(imgPath),
+        // 設置 BoxFit 為填滿，以確保圖片能放到最大。
+        fit: BoxFit.fill,
       ),
     );
   }
