@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       enName: "Otter",
       description:
           "水獺是一類水棲、肉食性的哺乳動物，在動物分類學中屬於食肉目鼬科下的亞科級別，稱為水獺亞科（Lutrinae），現存七個屬及十三個物種。",
+      content: "水獺亞科動物分佈於全球各地。紅樹林的水獺生長在歐亞大陸",
       img: "images/otter.jpeg",
       saved: false);
   Animal animalBengalTiger = new Animal(
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       enName: "BengalTiger",
       description:
           "孟加拉虎（學名：Panthera tigris tigris）[1][2]又名印度虎，是目前數量最多，分布最廣的虎的亞種，1758年，孟加拉虎成為瑞典自然學家卡爾·林奈為老虎命名時的模式標本，因而也就成了指名亞種。孟加拉虎主要分布在印度和孟加拉國。孟加拉虎也是這兩個國家的珍稀動物。",
+      content: "水獺是一類水棲",
       img: "images/BengalTiger.jpeg",
       saved: false);
   Animal animalSlowpoke = new Animal(
@@ -50,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       enName: "Slowpoke",
       description:
           "呆呆獸是第一世代的寶可夢。 呆呆獸會用尾巴在水邊釣魚，根據設定，當大舌貝咬住呆呆獸的尾巴時，它就會進化成呆殼獸。 在動畫和旁支系列遊戲中存在這一情節，但在主系列遊戲中呆呆獸的進化與大舌貝無關。",
+      content: "水獺是一類水棲",
       img: "images/Slowpoke.png",
       saved: false);
 
@@ -97,18 +100,21 @@ class _MyHomePageState extends State<MyHomePage> {
             centerTitle: false,
           ),
           backgroundColor: Colors.grey[200],
-          body: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.0,
-                  mainAxisSpacing: 3.0,
-                  crossAxisSpacing: 3.0),
-              itemCount: _saved.length,
-              itemBuilder: (context, index) {
-                var temp = <Animal>[];
-                temp = _saved.toList();
-                return _previewCard(temp[index]);
-              }));
+          body: Padding(
+            padding: const EdgeInsets.only(top: 3.0),
+            child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1.0,
+                    mainAxisSpacing: 3.0,
+                    crossAxisSpacing: 3.0),
+                itemCount: _saved.length,
+                itemBuilder: (context, index) {
+                  var temp = <Animal>[];
+                  temp = _saved.toList();
+                  return _previewCard(temp[index]);
+                }),
+          ));
     }));
   }
 
@@ -121,6 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
           image: AssetImage(animal.img),
           fit: BoxFit.fill,
         ),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return EnterDetailPage(animal: animal);
+          }));
+        },
       ),
     );
   }
@@ -280,8 +291,104 @@ class EnterDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(animal.chName)),
-      body: Text(animal.description),
+      appBar: AppBar(title: const Text("Detail Page")),
+      body: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 250,
+            child: Image(
+              image: AssetImage(animal.img),
+              fit: BoxFit.fill,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      animal.chName,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    Text(
+                      animal.enName,
+                    )
+                  ],
+                ),
+                Ink(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.favorite_border),
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text("110"),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.share,
+                      color: Colors.yellow[800],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "分享",
+                        style: TextStyle(
+                            fontSize: 12.0, color: Colors.yellow[800]),
+                      ),
+                    )
+                  ],
+                ),
+                InkWell(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        animal.saved ? Icons.bookmark : Icons.bookmark_border,
+                        color: Colors.yellow[800],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "收藏",
+                          style: TextStyle(
+                              fontSize: 12.0, color: Colors.yellow[800]),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          const Divider(),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 30.0),
+                child: Text(animal.description),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -293,6 +400,7 @@ class Animal {
     required this.chName,
     required this.enName,
     required this.description,
+    required this.content,
     required this.img,
     required this.saved,
   });
@@ -306,6 +414,8 @@ class Animal {
   /// 宣告 String 類型的 description，負責接收「簡介」。
   final String description;
 
+  final String content;
+
   /// 宣告 String 類型的 img，負責接收「圖片路徑」。
   final String img;
 
@@ -317,6 +427,7 @@ class Animal {
         chName: json["name"],
         enName: json["enName"],
         description: json["description"],
+        content: json["content"],
         img: json["img"],
         saved: json["saved"],
       );
@@ -326,6 +437,7 @@ class Animal {
         "name": chName,
         "enName": enName,
         "description": description,
+        "content": content,
         "img": img,
         "saved": saved,
       };
