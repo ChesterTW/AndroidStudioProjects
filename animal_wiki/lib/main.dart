@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_new
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -272,7 +273,15 @@ class _MyHomePageState extends State<MyHomePage> {
           InkWell(
             child: _buildButtonColumn(Icons.share, "分享"),
             onTap: () {
-              setState(() {});
+              setState(() {
+                Share.share("快來一起看看！！在 AnimalWiki 上找到了這個有趣的動物\n" +
+                    "動物名稱：" +
+                    animal.chName +
+                    "\n英文名稱：" +
+                    animal.enName +
+                    "\n簡介：" +
+                    animal.description);
+              });
             },
           ),
           InkWell(
@@ -333,21 +342,6 @@ class _DetailPageState extends State<DetailPage> {
         )
       ],
     ));
-  }
-
-  /// Widget _buildImage，負責設置「圖片」
-  /// 引數為類型 Animal 的 animal，
-  /// 使用其中的屬性「img」，獲取「圖片路徑」，以讀取「圖片」
-  /// 最終以 SizedBox return。
-  Widget _buildImage(Animal animal) {
-    return SizedBox(
-      width: double.infinity,
-      height: 250,
-      child: Image(
-        image: AssetImage(animal.img),
-        fit: BoxFit.fill,
-      ),
-    );
   }
 
   /// Widget _buildTitle，負責設置「標題」、「收藏鈕」
