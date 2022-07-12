@@ -32,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   /// 可以 Json 化，以簡潔 main.dart
+
+  /// 定義 animalOtter
   Animal animalOtter = new Animal(
       chName: "水獺",
       enName: "Otter",
@@ -43,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
       saved: false,
       loved: false,
       loveCount: 813);
+
+  /// 定義 animalBengalTiger
   Animal animalBengalTiger = new Animal(
       chName: "孟加拉虎",
       enName: "BengalTiger",
@@ -54,6 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
       saved: false,
       loved: false,
       loveCount: 219);
+
+  /// 定義 animalSlowpoke
   Animal animalSlowpoke = new Animal(
       chName: "呆呆獸",
       enName: "Slowpoke",
@@ -66,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
       loved: false,
       loveCount: 1316);
 
+  /// 宣告 Set _saved，利用不可重複的特性，儲存「已儲存的動物」。
   final _saved = <Animal>{};
 
   @override
@@ -91,11 +98,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+
+        /// 給予微灰的顏色，
+        /// 以讓眼睛可區分 Card 和 背景，
+        /// 可以增強滑動的動覺效果。
         backgroundColor: Colors.grey[300],
+
+        /// 給予 ListView ，以擁有上下滑動的功能。
         body: ListView(
           children: [
+            /// 製作 Otter 的 Card
             _buildCard(animalOtter),
+
+            /// 製作 BengalTiger 的 Card
             _buildCard(animalBengalTiger),
+
+            /// 製作 Slowpoke 的 Card
             _buildCard(animalSlowpoke)
           ],
         ));
@@ -259,21 +277,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Row(
+        /// 以主軸為準 ，進行「平分」排列
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // TODO: 2022/7/11 4:37 下午 待重構，程式碼過於重複、冗長。
+          /// 使用 InkWell，以讓整塊「Widget」都能有「觸發事件」，且不需修改 _buildButtonColumn。
           InkWell(
+            /// 呼叫 _buildButtonColumn，並給予 Icons.description、字串，
+            /// 以生成「按鈕欄」。
             child: _buildButtonColumn(Icons.description, "詳情"),
             onTap: () {
+              /// 導向「詳細頁面（DetailPage）」，並給予 animal 作為引數。
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return DetailPage(animal: animal);
               }));
             },
           ),
+
+          /// 使用 InkWell，以讓整塊「Widget」都能有「觸發事件」，且不需修改 _buildButtonColumn。
           InkWell(
+            /// 呼叫 _buildButtonColumn，並給予 Icons.share、字串，
+            /// 以生成「按鈕欄」。
             child: _buildButtonColumn(Icons.share, "分享"),
             onTap: () {
               setState(() {
+                /// 使用第三方套件「Share_plus」的 Class，
+                /// 可分享字串訊息給其他 App。
                 Share.share("快來一起看看！！在 AnimalWiki 上找到了這個有趣的動物\n" +
                     "動物名稱：" +
                     animal.chName +
@@ -284,7 +312,12 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
           ),
+
+          /// 使用 InkWell，以讓整塊「Widget」都能有「觸發事件」，且不需修改 _buildButtonColumn。
           InkWell(
+            /// 呼叫 _buildButtonColumn，
+            /// 將判斷是否已「儲存」，再給予 Icon、字串，
+            /// 以生成「按鈕欄」。
             child: _buildButtonColumn(
                 animal.saved ? Icons.bookmark : Icons.bookmark_border, "收藏"),
             onTap: () {
@@ -300,6 +333,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+/// 負責顯示動物的「詳細頁面（DetailPage）」，
+/// 需有 animal 作為引數，
+/// 才能知道要調用誰的資料。
 class DetailPage extends StatefulWidget {
   /// 建構式 Construction：需給予 Animal 類型的變數
   const DetailPage({Key? key, required this.animal}) : super(key: key);
@@ -316,32 +352,41 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: const Text("Detail Page"),
-          expandedHeight: 250,
-          stretch: true,
-          backgroundColor: Colors.white,
-          flexibleSpace: FlexibleSpaceBar(
-            stretchModes: const [StretchMode.zoomBackground],
-            background: Image(
-              image: AssetImage(widget.animal.img),
-              fit: BoxFit.cover,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: const Text("Detail Page"),
+            expandedHeight: 250,
+            stretch: true,
+            backgroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [StretchMode.zoomBackground],
+              background: Image(
+                image: AssetImage(widget.animal.img),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: Column(
-            children: [
-              _buildTitle(widget.animal),
-              const Divider(),
-              _buildContext(widget.animal)
-            ],
-          ),
-        )
-      ],
-    ));
+
+          /// 用 SliverToBoxAdapter 以包裝「一般Widget」
+          SliverToBoxAdapter(
+            /// 使用 Column 取得豎項佈局
+            child: Column(
+              children: [
+                /// DetailPage 的動物「名稱」、「愛心數」
+                _buildTitle(widget.animal),
+
+                /// 可愛的分隔線
+                const Divider(),
+
+                /// DetailPage 的內文，將讀取 animal.content。
+                _buildContext(widget.animal)
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   /// Widget _buildTitle，負責設置「標題」、「收藏鈕」
@@ -397,7 +442,7 @@ class _DetailPageState extends State<DetailPage> {
 
   /// Widget _buildDescription，負責設置「內文」，
   /// 引數為類型 Animal 的 animal，
-  /// 使用其中屬性「description」，
+  /// 使用其中屬性「content」，
   /// 最終以 Column return。
   Widget _buildContext(Animal animal) {
     return Column(
@@ -425,25 +470,28 @@ class Animal {
     required this.loveCount,
   });
 
-  /// 宣告 String 類型的 chName，負責接收「中文名稱」。
+  /// 宣告 String 類型的 chName，負責儲存「中文名稱」。
   final String chName;
 
-  /// 宣告 String 類型的 enName，負責接收「英文名稱」。
+  /// 宣告 String 類型的 enName，負責儲存「英文名稱」。
   final String enName;
 
-  /// 宣告 String 類型的 description，負責接收「簡介」。
+  /// 宣告 String 類型的 description，負責儲存「簡介」。
   final String description;
 
+  /// 宣告 String 類型的 img，負責儲存「內容」。
   final String content;
 
-  /// 宣告 String 類型的 img，負責接收「圖片路徑」。
+  /// 宣告 String 類型的 img，負責儲存「圖片路徑」。
   final String img;
 
   /// 宣告 bool 類型的 saved，負責儲存「是否存儲的狀態」。
   bool saved;
 
+  /// 宣告 bool 類型的 loved，負責儲存「是否愛了」。
   bool loved;
 
+  /// 宣告 int 類型的 loveCount，負責儲存「愛心數量」。
   final int loveCount;
 
   /// 接收 Json 檔，將裡頭的數值定義給對應的「變數」。
