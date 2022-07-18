@@ -38,7 +38,7 @@ class _DetailPageState extends State<DetailPage> {
 
           /// 用 SliverToBoxAdapter 以包裝「一般Widget」
           SliverToBoxAdapter(
-            /// 使用 Column 取得豎項佈局
+            /// 使用 Column 取得「豎向佈局」
             child: Column(
               children: [
                 /// DetailPage 的動物「名稱」、「愛心數」
@@ -62,8 +62,6 @@ class _DetailPageState extends State<DetailPage> {
   /// 使用其中屬性「chName」、「enName」、「loved」、「loveCount」，
   /// 最終以 Padding return。
   Widget _buildTitle(Animal animal) {
-    int integerSaveCount = animal.loveCount;
-    String saveCount = "$integerSaveCount";
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Row(
@@ -82,6 +80,7 @@ class _DetailPageState extends State<DetailPage> {
             ],
           ),
           InkWell(
+            key: const Key("LovedInk"),
             child: Row(
               children: [
                 Icon(
@@ -91,7 +90,7 @@ class _DetailPageState extends State<DetailPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    saveCount,
+                    animal.loveCount.toString(),
                     style: TextStyle(color: Colors.yellow[800]),
                   ),
                 )
@@ -100,6 +99,7 @@ class _DetailPageState extends State<DetailPage> {
             onTap: () {
               setState(() {
                 animal.loved = !animal.loved;
+                animal.loved ? animal.loveCount++ : animal.loveCount--;
               });
             },
           )

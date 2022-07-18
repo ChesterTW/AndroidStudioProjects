@@ -34,7 +34,7 @@ class Animal {
   bool loved;
 
   /// 宣告 int 類型的 loveCount，負責儲存「愛心數量」。
-  final int loveCount;
+  int loveCount;
 
   /// 接收 Json 檔，將裡頭的數值定義給對應的「變數」。
   factory Animal.fromJson(Map<String, dynamic> json) => Animal(

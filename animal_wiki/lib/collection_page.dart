@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'detail_page.dart';
 import 'model/animal.dart';
 
@@ -31,17 +30,14 @@ class _CollectionPageState extends State<CollectionPage> {
                   crossAxisSpacing: 3.0),
               itemCount: widget.saved.length,
               itemBuilder: (context, index) {
-                var temp = <Animal>[];
-                temp = widget.saved.toList();
-                return _previewCard(temp[index]);
+                return _previewCard(widget.saved.toList()[index]);
               }),
         ));
   }
 
   Widget _previewCard(Animal animal) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      decoration: const BoxDecoration(),
       child: InkWell(
         child: Ink.image(
           image: AssetImage(animal.img),

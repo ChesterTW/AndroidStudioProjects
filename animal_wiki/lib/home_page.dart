@@ -256,6 +256,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
           /// 使用 InkWell，以讓整塊「Widget」都能有「觸發事件」，且不需修改 _buildButtonColumn。
           InkWell(
+            key: const Key("bookmarkInkWell"),
+
             /// 呼叫 _buildButtonColumn，
             /// 將判斷是否已「儲存」，再給予 Icon、字串，
             /// 以生成「按鈕欄」。
