@@ -1,7 +1,16 @@
+import 'dart:convert';
+
+List<Animal> animalFromJson(String str) =>
+    List<Animal>.from(json.decode(str).map((x) => Animal.fromJson(x)));
+
+String animalToJson(List<Animal> data) =>
+    json.encode(List<dynamic>.from(data.map((e) => e.toJson())));
+
 /// Animal 類型
 class Animal {
   /// 類型 Animal 的建構式
   Animal({
+    required this.id,
     required this.chName,
     required this.enName,
     required this.description,
@@ -11,6 +20,8 @@ class Animal {
     required this.loved,
     required this.loveCount,
   });
+
+  final int id;
 
   /// 宣告 String 類型的 chName，負責儲存「中文名稱」。
   final String chName;
@@ -38,7 +49,8 @@ class Animal {
 
   /// 接收 Json 檔，將裡頭的數值定義給對應的「變數」。
   factory Animal.fromJson(Map<String, dynamic> json) => Animal(
-      chName: json["name"],
+      id: json["id"],
+      chName: json["chName"],
       enName: json["enName"],
       description: json["description"],
       content: json["content"],
@@ -49,7 +61,8 @@ class Animal {
 
   /// 發送 Json 檔，將「變數的值」輸入於對應的欄位中。
   Map<String, dynamic> toJson() => {
-        "name": chName,
+        "id": id,
+        "chName": chName,
         "enName": enName,
         "description": description,
         "content": content,

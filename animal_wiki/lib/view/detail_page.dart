@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'model/animal.dart';
+import '../model/animal.dart';
 
 /// 負責顯示動物的「詳細頁面（DetailPage）」，
 /// 需有 animal 作為引數，

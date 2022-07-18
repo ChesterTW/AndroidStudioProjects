@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'detail_page.dart';
-import 'model/animal.dart';
+import '../model/animal.dart';
 
 class CollectionPage extends StatefulWidget {
   CollectionPage({Key? key, required this.saved}) : super(key: key);

@@ -1,10 +1,13 @@
 // ignore_for_file: unnecessary_new
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'view/home_page.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -21,5 +24,14 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

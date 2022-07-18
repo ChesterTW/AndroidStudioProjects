@@ -1,9 +1,10 @@
-import 'package:animal_wiki/collection_page.dart';
+import 'package:animal_wiki/service/remote_service.dart';
+import 'package:animal_wiki/view/collection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'detail_page.dart';
-import 'model/animal.dart';
+import '../model/animal.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 定義 animalOtter
   Animal animalOtter = Animal(
+      id: 1,
       chName: "水獺",
       enName: "Otter",
       description:
@@ -30,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 定義 animalBengalTiger
   Animal animalBengalTiger = Animal(
+      id: 2,
       chName: "孟加拉虎",
       enName: "BengalTiger",
       description:
@@ -43,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 定義 animalSlowpoke
   Animal animalSlowpoke = Animal(
+      id: 3,
       chName: "呆呆獸",
       enName: "Slowpoke",
       description:
@@ -56,53 +60,79 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 宣告 Set _saved，利用不可重複的特性，儲存「已儲存的動物」。
   final _saved = <Animal>{};
+  var isLoaded = false;
+
+  List<Animal>? animals;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // fetch data from API
+    getData();
+  }
+
+  getData() async {
+    animals = await RemoteService().getPosts();
+    if (animals != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Animal Wiki"),
-          centerTitle: false,
-          actions: [
-            const IconButton(
-              onPressed: null,
-              icon: Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
+      appBar: AppBar(
+        title: const Text("Animal Wiki"),
+        centerTitle: false,
+        actions: [
+          const IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CollectionPage(saved: _saved);
-                }));
-              },
-              icon: const Icon(
-                Icons.bookmarks,
-                color: Colors.black,
-              ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CollectionPage(saved: _saved);
+                  },
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.bookmarks,
+              color: Colors.black,
             ),
-          ],
+          ),
+        ],
+      ),
+
+      /// 給予微灰的顏色，
+      /// 以讓眼睛可區分 Card 和 背景，
+      /// 可以增強滑動的動覺效果。
+      backgroundColor: Colors.grey[300],
+
+      /// 給予 ListView ，以擁有上下滑動的功能。
+      body: Visibility(
+        visible: isLoaded,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
         ),
-
-        /// 給予微灰的顏色，
-        /// 以讓眼睛可區分 Card 和 背景，
-        /// 可以增強滑動的動覺效果。
-        backgroundColor: Colors.grey[300],
-
-        /// 給予 ListView ，以擁有上下滑動的功能。
-        body: ListView(
-          children: [
-            /// 製作 Otter 的 Card
-            _buildCard(animalOtter),
-
-            /// 製作 BengalTiger 的 Card
-            _buildCard(animalBengalTiger),
-
-            /// 製作 Slowpoke 的 Card
-            _buildCard(animalSlowpoke)
-          ],
-        ));
+        child: ListView.builder(
+          itemCount: animals?.length,
+          itemBuilder: (context, index) {
+            return _buildCard(animals![index]);
+          },
+        ),
+      ),
+    );
   }
 
   /// buildCard，負責產生動物的「外頁」，
@@ -113,37 +143,38 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildCard(Animal animal) {
     //throw Exception();
     return Padding(
-        // Padding : 設置左上右方向為 16.0，底部為 4.0，讓 _buildCard 與螢幕邊界擁有距離，
-        // 以凸顯 ListView 的滑動感，
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
-        child: Container(
-          // 寬度設置：無限
-          width: double.infinity,
-          decoration: BoxDecoration(
-            // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
-            color: Colors.white,
-            // 讓每張 _buildCard 都有好看的四個圓角
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          // 使用 Column，以擁有「豎向」排版。
-          child: Column(
-            children: [
-              /// 負責外頁的「圖片」
-              /// Return ClipRRect, Child : Image
-              _buildImage(animal),
+      // Padding : 設置左上右方向為 16.0，底部為 4.0，讓 _buildCard 與螢幕邊界擁有距離，
+      // 以凸顯 ListView 的滑動感，
+      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
+      child: Container(
+        // 寬度設置：無限
+        width: double.infinity,
+        decoration: BoxDecoration(
+          // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
+          color: Colors.white,
+          // 讓每張 _buildCard 都有好看的四個圓角
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        // 使用 Column，以擁有「豎向」排版。
+        child: Column(
+          children: [
+            /// 負責外頁的「圖片」
+            /// Return ClipRRect, Child : Image
+            _buildImage(animal),
 
-              /// 負責外頁的「按鈕列」
-              /// Return Row, Children : 三個 buttonColumn
-              _buttonSection(animal),
+            /// 負責外頁的「按鈕列」
+            /// Return Row, Children : 三個 buttonColumn
+            _buttonSection(animal),
 
-              /// 我是可愛的分隔線，負責將「按鈕列」、「文字」區分開來。
-              const Divider(),
+            /// 我是可愛的分隔線，負責將「按鈕列」、「文字」區分開來。
+            const Divider(),
 
-              /// 負責外頁的「中英文名稱」、「簡介」。
-              _buildContext(animal)
-            ],
-          ),
-        ));
+            /// 負責外頁的「中英文名稱」、「簡介」。
+            _buildContext(animal)
+          ],
+        ),
+      ),
+    );
   }
 
   /// buildImage，負責產生外頁的「圖片」，
@@ -228,9 +259,13 @@ class _MyHomePageState extends State<MyHomePage> {
             child: _buildButtonColumn(Icons.description, "詳情"),
             onTap: () {
               /// 導向「詳細頁面（DetailPage）」，並給予 animal 作為引數。
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return DetailPage(animal: animal);
-              }));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return DetailPage(animal: animal);
+                  },
+                ),
+              );
             },
           ),
 
@@ -240,17 +275,19 @@ class _MyHomePageState extends State<MyHomePage> {
             /// 以生成「按鈕欄」。
             child: _buildButtonColumn(Icons.share, "分享"),
             onTap: () {
-              setState(() {
-                /// 使用第三方套件「Share_plus」的 Class，
-                /// 可分享字串訊息給其他 App。
-                Share.share("快來一起看看！！在 AnimalWiki 上找到了這個有趣的動物\n" +
-                    "動物名稱：" +
-                    animal.chName +
-                    "\n英文名稱：" +
-                    animal.enName +
-                    "\n簡介：" +
-                    animal.description);
-              });
+              setState(
+                () {
+                  /// 使用第三方套件「Share_plus」的 Class，
+                  /// 可分享字串訊息給其他 App。
+                  Share.share("快來一起看看！！在 AnimalWiki 上找到了這個有趣的動物\n" +
+                      "動物名稱：" +
+                      animal.chName +
+                      "\n英文名稱：" +
+                      animal.enName +
+                      "\n簡介：" +
+                      animal.description);
+                },
+              );
             },
           ),
 
@@ -264,10 +301,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: _buildButtonColumn(
                 animal.saved ? Icons.bookmark : Icons.bookmark_border, "收藏"),
             onTap: () {
-              setState(() {
-                animal.saved = !animal.saved;
-                animal.saved ? _saved.add(animal) : _saved.remove(animal);
-              });
+              setState(
+                () {
+                  animal.saved = !animal.saved;
+                  animal.saved ? _saved.add(animal) : _saved.remove(animal);
+                },
+              );
             },
           )
         ],
