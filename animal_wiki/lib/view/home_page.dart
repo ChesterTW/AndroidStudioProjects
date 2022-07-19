@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 將 decode JSON 包裝成方法，並在其中給予 List<Animal>? animals。
   getData() async {
     // 接收類別 RemoteService 的方法 getPosts 的 Return。
-    animals = await RemoteService().getPosts();
+    animals = await RemoteService().getAnimals();
     // 確認 animals 是否有資料，若有則讓 isLoaded 為 True，以讓 View 可以渲染。
     if (animals != null) {
       setState(
