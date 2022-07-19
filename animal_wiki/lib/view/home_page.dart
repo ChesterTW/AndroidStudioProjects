@@ -68,16 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    // fetch data from API
+    /// fetch data from API，
+    /// 讓 API 可以在一開始就開始讀取、Decode。
     getData();
   }
 
+  /// 將 decode JSON 包裝成方法，並在其中給予 List<Animal>? animals。
   getData() async {
+    // 接收類別 RemoteService 的方法 getPosts 的 Return。
     animals = await RemoteService().getPosts();
+    // 確認 animals 是否有資料，若有則讓 isLoaded 為 True，以讓 View 可以渲染。
     if (animals != null) {
-      setState(() {
-        isLoaded = true;
-      });
+      setState(
+        () {
+          isLoaded = true;
+        },
+      );
     }
   }
 
@@ -121,13 +127,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
       /// 給予 ListView ，以擁有上下滑動的功能。
       body: Visibility(
+        /// isLoaded，避免 View 讀取出是 Null 的 animals。
         visible: isLoaded,
         replacement: const Center(
+          /// 會顯示不斷轉動的讀取條
           child: CircularProgressIndicator(),
         ),
         child: ListView.builder(
+          /// 數量設置為：animals 的長度，問號表示： 可能為 Null
           itemCount: animals?.length,
           itemBuilder: (context, index) {
+            /// _buildCard 引數為 Animal 類型，因此僅需在 List animals 中，
+            /// 指定要給予第幾個 index。
             return _buildCard(animals![index]);
           },
         ),

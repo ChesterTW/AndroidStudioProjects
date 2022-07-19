@@ -21,6 +21,7 @@ class Animal {
     required this.loveCount,
   });
 
+  /// 宣告 Int 類型的 id，負責儲存「ID」。
   final int id;
 
   /// 宣告 String 類型的 chName，負責儲存「中文名稱」。
