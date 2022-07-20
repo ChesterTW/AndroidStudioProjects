@@ -24,25 +24,4 @@ class RemoteService {
     // 若 response.statusCode 不等於 200，將回傳 null。
     return null;
   }
-
-  Future<List<Animal>?> updateAnimal(Animal animal) async {
-    // http.Client() as client
-    var client = http.Client();
-
-    // 定義 url 為 API 的 URL。
-    var url = Uri.parse("https://localhost:7036/animal/EditAnimal");
-
-    // 宣告 response，並定義為 client.get(url) 的回傳值。
-    var response = await client.post(url);
-
-    // 判斷式：response.statusCode 是否等於 200。（確認是否成功）
-    if (response.statusCode == 204) {
-      // 宣告 json，並給予 response.body 中的數值。
-      var json = response.body;
-      // 呼叫類別 Animal 的方法 animalFromJson，給予 json，以 decode 並回傳。
-      return animalFromJson(json);
-    }
-    // 若 response.statusCode 不等於 200，將回傳 null。
-    return null;
-  }
 }

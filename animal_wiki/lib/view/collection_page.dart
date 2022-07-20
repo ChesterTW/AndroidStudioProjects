@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'detail_page.dart';
 import '../model/animal.dart';
 
+/// 負責「收藏頁面（CollectionPage）」
 class CollectionPage extends StatefulWidget {
   CollectionPage({Key? key, required this.saved}) : super(key: key);
 
@@ -35,6 +36,10 @@ class _CollectionPageState extends State<CollectionPage> {
         ));
   }
 
+  /// 創建 Widget _previewCard，
+  /// 使用引數 Animal animal，
+  /// 將利用其中的 img，顯示一張圖片卡，
+  /// 且藉由 InkWell 給予點擊動作，讓使用者可以跳轉「詳細頁面（detail_page.dart）。
   Widget _previewCard(Animal animal) {
     return SizedBox(
       width: double.infinity,
