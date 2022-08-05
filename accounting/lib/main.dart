@@ -13,103 +13,195 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.orange,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text("Accounting"),
+        centerTitle: true,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+
+      /// 最外層，包覆了所有「主頁面」的 Widget
+      body: Container(
+        /// 設計用顏色
+        color: Colors.grey[400],
+
+        /// 將「主頁面」設計為「豎項」排版
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            /// BALANCE
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
+                    color: Colors.white,
+                    // 讓每張 _buildCard 都有好看的四個圓角
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      const BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-4.0, -4.0), //陰影y軸偏移量
+                        blurRadius: 15.0, //陰影模糊程度
+                        spreadRadius: 1, //陰影擴散程度
+                      ),
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        offset: const Offset(4.0, 4.0), //陰影y軸偏移量
+                        blurRadius: 15.0, //陰影模糊程度
+                        spreadRadius: 1, //陰影擴散程度
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              "B A L A N C E",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                            const Text(
+                              "\$ 9380",
+                              style: TextStyle(
+                                fontSize: 40,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  )),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+
+            /// transaction
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
+                  color: Colors.grey[300],
+                  // 讓每張 _buildCard 都有好看的四個圓角
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    const BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-4.0, -4.0), //陰影y軸偏移量
+                      blurRadius: 15.0, //陰影模糊程度
+                      spreadRadius: 1, //陰影擴散程度
+                    ),
+                    BoxShadow(
+                      color: Colors.grey.shade500,
+                      offset: const Offset(4.0, 4.0), //陰影y軸偏移量
+                      blurRadius: 15.0, //陰影模糊程度
+                      spreadRadius: 1, //陰影擴散程度
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "T R A N S A C T I O N",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                        height: 40,
+                        thickness: 1,
+                        indent: 30,
+                        endIndent: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildButtonColumn(Icons.fastfood, "飲食"),
+                          _buildButtonColumn(Icons.sports_motorsports, "機車"),
+                          _buildButtonColumn(Icons.description, "詳情"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  /// buildButtonColumn，創建單個「按鈕欄」，
+  /// 引數為：IconData, label，會將引數對應用在 Icon 和 Container 中，並用 Column return，
+  /// 而其屬性有：
+  /// Colors.yellow[900]
+  /// MainAxisSize.min
+  /// MainAxisAlignment.center
+  Widget _buildButtonColumn(IconData icon, String label) {
+    Color? color = Colors.black;
+    return Container(
+      width: 50,
+      height: 70,
+      decoration: BoxDecoration(
+        // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
+        color: Colors.white,
+        // 讓每張 _buildCard 都有好看的四個圓角
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          const BoxShadow(
+            color: Colors.white,
+            offset: Offset(-4.0, -4.0), //陰影y軸偏移量
+            blurRadius: 15.0, //陰影模糊程度
+            spreadRadius: 1, //陰影擴散程度
+          ),
+          BoxShadow(
+            color: Colors.grey.shade500,
+            offset: const Offset(4.0, 4.0), //陰影y軸偏移量
+            blurRadius: 15.0, //陰影模糊程度
+            spreadRadius: 1, //陰影擴散程度
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: color,
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              label,
+              style: TextStyle(fontSize: 12.0, color: color),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
