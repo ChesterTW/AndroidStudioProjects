@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
-                  color: Colors.grey[300],
+                  color: Colors.white,
                   // 讓每張 _buildCard 都有好看的四個圓角
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
