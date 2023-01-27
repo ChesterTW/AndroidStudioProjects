@@ -1,3 +1,6 @@
+import 'package:accounting/view/AccountPage.dart';
+import 'package:accounting/view/CreateExpensePage.dart';
+import 'package:accounting/view/HomePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -29,179 +32,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+  int _currentIndex = 0;
+  final pages = [HomePage(), CreateExpensePage(), AccountPage()];
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Accounting"),
-        centerTitle: true,
+        title: const Text(
+          "Accounting",
+        ),
+        centerTitle: false,
       ),
 
       /// 最外層，包覆了所有「主頁面」的 Widget
-      body: Container(
-        /// 設計用顏色
-        color: Colors.grey[400],
-
-        /// 將「主頁面」設計為「豎項」排版
-        child: Column(
-          children: [
-            /// BALANCE
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
-                    color: Colors.white,
-                    // 讓每張 _buildCard 都有好看的四個圓角
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      const BoxShadow(
-                        color: Colors.white,
-                        offset: Offset(-4.0, -4.0), //陰影y軸偏移量
-                        blurRadius: 15.0, //陰影模糊程度
-                        spreadRadius: 1, //陰影擴散程度
-                      ),
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        offset: const Offset(4.0, 4.0), //陰影y軸偏移量
-                        blurRadius: 15.0, //陰影模糊程度
-                        spreadRadius: 1, //陰影擴散程度
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
-                    child: Column(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              "B A L A N C E",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                            const Text(
-                              "\$ 9380",
-                              style: TextStyle(
-                                fontSize: 40,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-
-            /// transaction
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
-                  color: Colors.white,
-                  // 讓每張 _buildCard 都有好看的四個圓角
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    const BoxShadow(
-                      color: Colors.white,
-                      offset: Offset(-4.0, -4.0), //陰影y軸偏移量
-                      blurRadius: 15.0, //陰影模糊程度
-                      spreadRadius: 1, //陰影擴散程度
-                    ),
-                    BoxShadow(
-                      color: Colors.grey.shade500,
-                      offset: const Offset(4.0, 4.0), //陰影y軸偏移量
-                      blurRadius: 15.0, //陰影模糊程度
-                      spreadRadius: 1, //陰影擴散程度
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "T R A N S A C T I O N",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        height: 40,
-                        thickness: 1,
-                        indent: 30,
-                        endIndent: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildButtonColumn(Icons.fastfood, "飲食"),
-                          _buildButtonColumn(Icons.sports_motorsports, "機車"),
-                          _buildButtonColumn(Icons.description, "詳情"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      body: pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: "首頁", icon: Icon(Icons.home_filled)),
+          BottomNavigationBarItem(
+              label: "新增", icon: Icon(Icons.library_add_outlined)),
+          BottomNavigationBarItem(
+              label: "帳戶", icon: Icon(Icons.account_circle_outlined))
+        ],
+        currentIndex: _currentIndex,
+        fixedColor: Colors.amber,
+        onTap: _onItemClick,
       ),
     );
   }
 
-  /// buildButtonColumn，創建單個「按鈕欄」，
-  /// 引數為：IconData, label，會將引數對應用在 Icon 和 Container 中，並用 Column return，
-  /// 而其屬性有：
-  /// Colors.yellow[900]
-  /// MainAxisSize.min
-  /// MainAxisAlignment.center
-  Widget _buildButtonColumn(IconData icon, String label) {
-    Color? color = Colors.black;
-    return Container(
-      width: 50,
-      height: 70,
-      decoration: BoxDecoration(
-        // 將每張 _buildCard 的底色設為白色，凸顯 ListView 的滑動感。
-        color: Colors.white,
-        // 讓每張 _buildCard 都有好看的四個圓角
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          const BoxShadow(
-            color: Colors.white,
-            offset: Offset(-4.0, -4.0), //陰影y軸偏移量
-            blurRadius: 15.0, //陰影模糊程度
-            spreadRadius: 1, //陰影擴散程度
-          ),
-          BoxShadow(
-            color: Colors.grey.shade500,
-            offset: const Offset(4.0, 4.0), //陰影y軸偏移量
-            blurRadius: 15.0, //陰影模糊程度
-            spreadRadius: 1, //陰影擴散程度
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: color,
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 12.0, color: color),
-            ),
-          )
-        ],
-      ),
-    );
+  void _onItemClick(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
