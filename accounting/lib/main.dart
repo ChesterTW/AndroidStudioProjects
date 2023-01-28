@@ -32,14 +32,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  final pages = [HomePage(), CreateExpensePage(), AccountPage()];
+  var pages = [HomePage(), CreateExpensePage(), AccountPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: const Text(
           "Accounting",
+          style: TextStyle(color: Colors.black87),
         ),
 
         // Title 是否置中？false 的話，會將 Title 置左。
@@ -74,6 +76,25 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemClick,
       ),
     );
+  }
+
+  void _CreateExpensePage() {
+    showBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 400,
+            color: Colors.black,
+            child: Center(
+              child: ElevatedButton(
+                child: const Text("Close"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          );
+        });
   }
 
   void _onItemClick(int index) {
