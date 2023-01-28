@@ -31,28 +31,43 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
   int _currentIndex = 0;
   final pages = [HomePage(), CreateExpensePage(), AccountPage()];
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "Accounting",
         ),
+
+        // Title 是否置中？false 的話，會將 Title 置左。
         centerTitle: false,
       ),
 
       /// 最外層，包覆了所有「主頁面」的 Widget
       body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: "首頁", icon: Icon(Icons.home_filled)),
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              label: "新增", icon: Icon(Icons.library_add_outlined)),
+            label: "首頁",
+            icon: _currentIndex == 0
+                ? const Icon(Icons.home_rounded)
+                : const Icon(Icons.home_outlined),
+          ),
           BottomNavigationBarItem(
-              label: "帳戶", icon: Icon(Icons.account_circle_outlined))
+            label: "新增",
+            icon: _currentIndex == 1
+                ? const Icon(Icons.library_add)
+                : const Icon(Icons.library_add_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: "帳戶",
+            icon: _currentIndex == 2
+                ? const Icon(Icons.account_circle)
+                : const Icon(Icons.account_circle_outlined),
+          )
         ],
         currentIndex: _currentIndex,
         fixedColor: Colors.amber,
