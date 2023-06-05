@@ -1,3 +1,4 @@
+import 'package:accounting/category_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:accounting/model/DatabaseHelper.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,77 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget categoryIcon(category) {
-    switch (category) {
-      case "餐飲":
-        //print("widget.date:${widget.date}");
-        return const Icon(
-          Icons.dining_outlined,
-          size: 40,
-        );
-      case "食材":
-        return const Icon(
-          Icons.food_bank_outlined,
-          size: 40,
-        );
-      case "服飾":
-        return const Icon(
-          Icons.checkroom_rounded,
-          size: 40,
-        );
-      case "家用":
-        return const Icon(
-          Icons.other_houses_outlined,
-          size: 40,
-        );
-      case "娛樂":
-        return const Icon(
-          Icons.sports_bar_rounded,
-          size: 40,
-        );
-      case "交通":
-        return const Icon(
-          Icons.local_gas_station_outlined,
-          size: 40,
-        );
-      case "通訊":
-        return const Icon(
-          Icons.wifi_rounded,
-          size: 40,
-        );
-      case "健康":
-        return const Icon(
-          Icons.health_and_safety_outlined,
-          size: 40,
-        );
-      case "學習":
-        return const Icon(
-          Icons.lightbulb_outline_rounded,
-          size: 40,
-        );
-      case "購物":
-        return const Icon(
-          Icons.shopping_bag_outlined,
-          size: 40,
-        );
-      case "費用":
-        return const Icon(
-          Icons.money_off_csred_rounded,
-          size: 40,
-        );
-      case "雜費":
-        return const Icon(
-          Icons.list_alt_rounded,
-          size: 40,
-        );
-    }
-
-    return const Icon(
-      Icons.not_interested_rounded,
-      size: 40,
-    );
-  }
-
   int startDate = 1;
 
   getStartDate() async {
@@ -106,43 +36,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MultiSliver(
       children: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(25, 30, 35, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "花費佔比",
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    height: 1.2125,
-                    color: Colors.black,
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "查看更多",
-                      style: GoogleFonts.inter(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        height: 1.2125,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      size: 14,
-                      color: Colors.grey[700],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+        const Title(
+          title: '花費佔比',
+          seeMoreText: '查看更多',
+          seeMoreIcon: Icons.keyboard_arrow_right_rounded,
         ),
         SliverToBoxAdapter(
           child: Padding(
@@ -154,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Total>> snapshot) {
                   if (!snapshot.hasData) {
-                    return const Center(child: Text('Loading...'));
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(
                         child:
@@ -170,42 +67,7 @@ class _HomePageState extends State<HomePage> {
                     itemCount: totalList.length,
                     itemBuilder: (context, int index) {
                       final total = totalList[index];
-                      return SizedBox(
-                        height: 100,
-                        width: 120,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 0.5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  categoryIcon(total.category),
-                                  Text(
-                                    "\$${total.total.toString()}",
-                                    style: const TextStyle(
-                                        color: Colors.greenAccent,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "${total.percentage.toString()}%",
-                                    style: TextStyle(
-                                      color: Colors.grey[500],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
+                      return ExpenseRatio(total: total);
                     },
                   );
                 },
@@ -213,44 +75,146 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 30, 35, 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "花費紀錄",
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      height: 1.2125,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "查看更多",
-                        style: GoogleFonts.inter(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2125,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        size: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+        const Title(
+          title: '花費紀錄',
+          seeMoreText: '查看更多',
+          seeMoreIcon: Icons.keyboard_arrow_right_rounded,
         ),
         const SliverToBoxAdapter(
           child: CalendarWeeklyView(),
+        ),
+      ],
+    );
+  }
+}
+
+class ExpenseRatio extends StatelessWidget {
+  const ExpenseRatio({
+    Key? key,
+    required this.total,
+  }) : super(key: key);
+
+  final Total total;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      width: 120,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 0.5,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                categoryIcon(total.category),
+                Text(
+                  "\$${total.total.toString()}",
+                  style: const TextStyle(
+                      color: Colors.greenAccent,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "${total.percentage.toString()}%",
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  final String title;
+  final String seeMoreText;
+  final IconData seeMoreIcon;
+  const Title({
+    Key? key,
+    required this.title,
+    required this.seeMoreText,
+    required this.seeMoreIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 30, 35, 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  height: 1.2125,
+                  color: Colors.black,
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    seeMoreText,
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      height: 1.2125,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  Icon(
+                    seeMoreIcon,
+                    size: 14,
+                    color: Colors.grey[700],
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+}
+
+class SeeMore extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  const SeeMore({
+    Key? key,
+    required this.text,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          text,
+          style: GoogleFonts.inter(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            height: 1.2125,
+            color: Colors.grey[700],
+          ),
+        ),
+        Icon(
+          icon,
+          size: 14,
+          color: Colors.grey[700],
         ),
       ],
     );
@@ -281,23 +245,23 @@ class _CalendarWeeklyViewState extends State<CalendarWeeklyView> {
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           Text(
             dateAbr[0] + dateAbr[1].toUpperCase(),
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          Text(dateNumber, style: const TextStyle(fontSize: 14)),
+          Text(dateNumber, style: GoogleFonts.inter(fontSize: 14)),
         ]),
       );
     }
 
-    DateTime now = DateTime.now();
+    DateTime nowDateTime = DateTime.now();
 
-    List<DateTime> dates = [
-      now,
-      now.subtract(const Duration(days: 1)),
-      now.subtract(const Duration(days: 2)),
-      now.subtract(const Duration(days: 3)),
-      now.subtract(const Duration(days: 4)),
-      now.subtract(const Duration(days: 5)),
-      now.subtract(const Duration(days: 6))
+    List<DateTime> pastWeek = [
+      nowDateTime,
+      nowDateTime.subtract(const Duration(days: 1)),
+      nowDateTime.subtract(const Duration(days: 2)),
+      nowDateTime.subtract(const Duration(days: 3)),
+      nowDateTime.subtract(const Duration(days: 4)),
+      nowDateTime.subtract(const Duration(days: 5)),
+      nowDateTime.subtract(const Duration(days: 6))
     ];
 
     Widget calendarBox(BuildContext context) {
@@ -372,15 +336,6 @@ class _CalendarWeeklyViewState extends State<CalendarWeeklyView> {
                 onValueChanged: (value) {
                   setState(() {
                     groupValue = value;
-                    print(groupValue);
-
-                    /// 查詢點擊的日期
-                    print(
-                        "顯示時間：${dates[groupValue!].millisecondsSinceEpoch ~/ 1000},"
-                        " ${DateFormat('yyyy-MM-dd').format(dates[groupValue!])}");
-
-                    /// 查詢該日期的資料
-                    /// print("ee");
                   });
                 })),
       );
@@ -389,7 +344,7 @@ class _CalendarWeeklyViewState extends State<CalendarWeeklyView> {
     return Column(
       children: [
         calendarBox(context),
-        VerticalList(date: dates[groupValue!]),
+        VerticalList(date: pastWeek[groupValue!]),
       ],
     );
   }
@@ -406,72 +361,48 @@ class VerticalList extends StatefulWidget {
 class _VerticalListState extends State<VerticalList> {
   @override
   Widget build(BuildContext context) {
+    /// 增加餘額
+    incrementBalance(int amount, int date) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      /// 欲刪除的日期是這個月的話，才會更動餘額。
+      if (DateTime.now().month ==
+          DateTime.fromMillisecondsSinceEpoch(date * 1000).month) {
+        setState(() {
+          /// 增減時，只更動浮動值，在下個月就會被重置為固定值。
+          int balance = (prefs.getInt("prefBalance") ?? 10000) + amount;
+          prefs.setInt("prefBalance", balance);
+        });
+      }
+    }
+
+    /// 減少花費
+    decreaseExpense(int amount, int date) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      /// 欲刪除的日期是這個月的話，才會更動花費。
+      if (DateTime.now().month ==
+          DateTime.fromMillisecondsSinceEpoch(date * 1000).month) {
+        setState(() {
+          int expense = (prefs.getInt("prefExpense") ?? 0) - amount;
+          prefs.setInt("prefExpense", expense);
+        });
+      }
+    }
+
     return FutureBuilder<List<Expense>>(
       future: DatabaseHelper.instance
           .getExpensesByDate(DateFormat('yyyy-MM-dd').format(widget.date)),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: Text('Loading...'));
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(
               child: Text('Error loading expenses: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Container(
-            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Column(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Divider(
-                      color: Colors.black38,
-                      height: 0.5,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Center(
-                      child: Text(
-                        '無花費紀錄',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
+          return const NoExpense();
         }
         final expenses = snapshot.data!;
-
-        /// 增加餘額
-        incrementBalance(int amount, int date) async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-
-          /// 欲刪除的日期是這個月的話，才會更動餘額。
-          if (DateTime.now().month ==
-              DateTime.fromMillisecondsSinceEpoch(date * 1000).month) {
-            setState(() {
-              /// 增減時，只更動浮動值，在下個月就會被重置為固定值。
-              int balance = (prefs.getInt("prefBalance") ?? 10000) + amount;
-              prefs.setInt("prefBalance", balance);
-            });
-          }
-        }
-
-        /// 減少花費
-        decreaseExpense(int amount, int date) async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-
-          /// 欲刪除的日期是這個月的話，才會更動花費。
-          if (DateTime.now().month ==
-              DateTime.fromMillisecondsSinceEpoch(date * 1000).month) {
-            setState(() {
-              int expense = (prefs.getInt("prefExpense") ?? 0) - amount;
-              prefs.setInt("prefExpense", expense);
-            });
-          }
-        }
 
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -490,93 +421,13 @@ class _VerticalListState extends State<VerticalList> {
                   shape: const Border(
                     top: BorderSide(width: 0.5, color: Colors.black26),
                   ),
-                  leading: SizedBox(
-                      height: double.infinity,
-                      child: categoryIcon(expense.category)),
-                  title: Text("\$ ${expense.amount.toString()}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.greenAccent[700],
-                      )),
-                  subtitle: Text(
-                    expense.category,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                    ),
-                  ),
-                  trailing: Text(
-                    DateFormat('yyyy / M / d EEE', "zh_CN").format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          expense.dateTime * 1000),
-                    ),
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                    ),
-                  ),
-                  onTap: () {},
+                  leading: expenseIcon(expense: expense),
+                  title: expenseAmount(expense: expense),
+                  subtitle: expenseCategory(expense: expense),
+                  trailing: expenseDate(expense: expense),
                   onLongPress: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Center(
-                              child: Text("確定刪除該筆紀錄 ？"),
-                            ),
-                            actions: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  MaterialButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text(
-                                      "取消",
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        DatabaseHelper.instance
-                                            .deleteExpense(expense.id!);
-                                        incrementBalance(
-                                            expense.amount, expense.dateTime);
-                                        decreaseExpense(
-                                            expense.amount, expense.dateTime);
-                                      });
-
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration:
-                                              const Duration(milliseconds: 500),
-                                          pageBuilder: (BuildContext context,
-                                              Animation<double> animation,
-                                              Animation<double>
-                                                  secondaryAnimation) {
-                                            return FadeTransition(
-                                              opacity: animation,
-                                              child: const MyApp(),
-                                            );
-                                          },
-                                        ),
-                                        (Route<dynamic> route) => false,
-                                      );
-                                    },
-                                    color: Colors.redAccent,
-                                    child: const Text(
-                                      "確定",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          );
-                        });
+                    DeleteExpenseDialog(
+                        context, expense, incrementBalance, decreaseExpense);
                   },
                 ),
               ),
@@ -587,86 +438,176 @@ class _VerticalListState extends State<VerticalList> {
     );
   }
 
-  Widget categoryIcon(category) {
-    switch (category) {
-      case "餐飲":
-        //print("widget.date:${widget.date}");
-        return const Icon(
-          Icons.dining_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "食材":
-        return const Icon(
-          Icons.food_bank_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "服飾":
-        return const Icon(
-          Icons.checkroom_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "家用":
-        return const Icon(
-          Icons.other_houses_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "娛樂":
-        return const Icon(
-          Icons.sports_bar_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "交通":
-        return const Icon(
-          Icons.local_gas_station_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "通訊":
-        return const Icon(
-          Icons.wifi_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "健康":
-        return const Icon(
-          Icons.health_and_safety_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "學習":
-        return const Icon(
-          Icons.lightbulb_outline_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "購物":
-        return const Icon(
-          Icons.shopping_bag_outlined,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "費用":
-        return const Icon(
-          Icons.money_off_csred_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-      case "雜費":
-        return const Icon(
-          Icons.list_alt_rounded,
-          size: 36,
-          color: Colors.grey,
-        );
-    }
+  Future<dynamic> DeleteExpenseDialog(
+      BuildContext context,
+      Expense expense,
+      Future<void> Function(int amount, int date) incrementBalance,
+      Future<void> Function(int amount, int date) decreaseExpense) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Center(
+              child: Text("確定刪除該筆紀錄 ？"),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "取消",
+                    ),
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      setState(() {
+                        DatabaseHelper.instance.deleteExpense(expense.id!);
+                        incrementBalance(expense.amount, expense.dateTime);
+                        decreaseExpense(expense.amount, expense.dateTime);
+                      });
 
-    return const Icon(
-      Icons.not_interested_rounded,
-      size: 40,
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 500),
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: const MyApp(),
+                            );
+                          },
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                    color: Colors.redAccent,
+                    child: const Text(
+                      "確定",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700, color: Colors.white),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
+  }
+}
+
+class expenseIcon extends StatelessWidget {
+  const expenseIcon({
+    Key? key,
+    required this.expense,
+  }) : super(key: key);
+
+  final Expense expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: double.infinity, child: categoryIcon(expense.category));
+  }
+}
+
+class expenseAmount extends StatelessWidget {
+  const expenseAmount({
+    Key? key,
+    required this.expense,
+  }) : super(key: key);
+
+  final Expense expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "\$ ${expense.amount.toString()}",
+      style: GoogleFonts.inter(
+        fontSize: 16,
+        color: Colors.greenAccent[400],
+      ),
+    );
+  }
+}
+
+class expenseCategory extends StatelessWidget {
+  const expenseCategory({
+    Key? key,
+    required this.expense,
+  }) : super(key: key);
+
+  final Expense expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      expense.category,
+      style: GoogleFonts.inter(
+        fontSize: 12,
+        fontWeight: FontWeight.w200,
+      ),
+    );
+  }
+}
+
+class expenseDate extends StatelessWidget {
+  const expenseDate({
+    Key? key,
+    required this.expense,
+  }) : super(key: key);
+
+  final Expense expense;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      DateFormat('yyyy / M / d EEE', "zh_CN").format(
+        DateTime.fromMillisecondsSinceEpoch(expense.dateTime * 1000),
+      ),
+      style: GoogleFonts.inter(
+        fontSize: 14,
+      ),
+    );
+  }
+}
+
+class NoExpense extends StatelessWidget {
+  const NoExpense({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Column(
+          children: const [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: Divider(
+                color: Colors.black38,
+                height: 0.5,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  '無花費紀錄',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
