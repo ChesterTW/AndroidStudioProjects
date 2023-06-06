@@ -1,16 +1,30 @@
-# accounting
+# 前言
 
-A new Flutter project.
+這是一個記帳APP，名為：Spendify（請 ChatGPT 取的XD）<br>
 
-## Getting Started
+<br>
 
-This project is a starting point for a Flutter application.
+可以紀錄日常花費，了解每個月的花費有無赤支，<br>
+讓你查看本月的「花費佔比」，以及近七天的「花費紀錄」，
 
-A few resources to get you started if this is your first Flutter project:
+<br>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+而畫面在設計時，特地讓用戶減少操作、跳轉，<br>
+便能「看見、使用」最重要的功能，
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<br>
+
+如果有需要調整「花費餘額」？可以設定每月的「固定額度」。
+
+<br>
+
+如果有需要特別追加這個月的可餘額？可以設定本月的「追加額度」。
+
+<br>
+
+如果有需要調整「每月開始記帳的日期」？可以設定「每月起始日期」。
+
+![image](https://drive.google.com/file/d/13XqZ7ZsZ1Og5U0WIhn-R9eLpwC6hQpoy/view?usp=sharing)
+
+
+
