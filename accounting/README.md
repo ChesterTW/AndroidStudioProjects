@@ -2,11 +2,13 @@
 
 這是一個記帳APP，名為：Spendify（請 ChatGPT 取的XD）<br>
 <br>
-[Spendify 的截圖](https://drive.google.com/drive/folders/1WsYfle3v3Az-mabM22Ex0Nom0-4_7QBz?usp=sharing)
+Spendify 的所有截圖：[Google Drive](https://drive.google.com/drive/folders/1WsYfle3v3Az-mabM22Ex0Nom0-4_7QBz?usp=sharing)
+
+ ![image](https://github.com/ChesterTW/AndroidStudioProjects/blob/main/accounting/images/home_page.png)
 
 <br>
 
-### 製作源由
+## 製作源由
 
 APP Store 的記帳 APP，多是功能繁多、畫面雜亂，<br>
 或是每次打開都賞你五秒的廣告，<br>
@@ -23,14 +25,14 @@ APP Store 的記帳 APP，多是功能繁多、畫面雜亂，<br>
 
 <br>
 
-### 調整功能
+## 調整功能
 1. 設定每月的「固定額度」<br>
 2. 設定本月的「追加額度」<br>
 3. 設定「每月起始日期」<br>
 
 <br>
 
-### 學到的
+## 學到的
 在這一個月的時間內，利用 Figma 設計 APP，和請朋友做 UI/UX 測試，不斷調適，做出舒適的 APP。學習到：<br>
 
 1. 手機的常用手勢，能夠方便操作<br>
@@ -47,6 +49,7 @@ APP Store 的記帳 APP，多是功能繁多、畫面雜亂，<br>
   * 運用 `showDatePicker` 挑選日期<br>
   * 使用 `ToggleButtons`、`CupertinoSlidingSegmentedControl` 做出直覺的選取按鈕<br>
   * 透過 `SingleChildScrollView` 渲染物件於側向滑動列中<br>
+    ![image](https://github.com/ChesterTW/AndroidStudioProjects/blob/main/accounting/images/user_new_expense.png)
 
 <br>
 
@@ -61,6 +64,7 @@ APP Store 的記帳 APP，多是功能繁多、畫面雜亂，<br>
 3. 國泰 Setting：<br>
 
   * 使用 `ExpansionTile`、`ListTile` 模仿 國泰APP 的功能列。能幫助使用者快速地找到功能，而且畫面非常整潔，我覺得是一個很棒的做法。<br>
+  ![image](https://github.com/ChesterTW/AndroidStudioProjects/blob/main/accounting/images/setting_page.png)
 
 <br>
 
