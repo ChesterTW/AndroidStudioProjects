@@ -224,9 +224,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
           Expanded(
             child: Scrollbar(
               thumbVisibility: false,
-              trackVisibility: true,
+              trackVisibility: false,
               showTrackOnHover: true,
-              thickness: 3,
+              thickness: 0,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: _CategoriesView(

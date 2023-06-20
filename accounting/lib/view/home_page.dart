@@ -42,38 +42,7 @@ class _HomePageState extends State<HomePage> {
           seeMoreIcon: Icons.keyboard_arrow_right_rounded,
         ),
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 0, 0),
-            child: SizedBox(
-              height: 120,
-              child: FutureBuilder<List<Total>>(
-                future: DatabaseHelper.instance.getTotalByDate(startDate),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Total>> snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                        child:
-                            Text('Error loading expenses: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('無花費紀錄'));
-                  }
-
-                  final totalList = snapshot.data!;
-
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: totalList.length,
-                    itemBuilder: (context, int index) {
-                      final total = totalList[index];
-                      return ExpenseRatio(total: total);
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
+          child: ExpenseMonthlyView(startDate: startDate),
         ),
         const Title(
           title: '花費紀錄',
@@ -84,6 +53,51 @@ class _HomePageState extends State<HomePage> {
           child: CalendarWeeklyView(),
         ),
       ],
+    );
+  }
+}
+
+class ExpenseMonthlyView extends StatelessWidget {
+  const ExpenseMonthlyView({
+    Key? key,
+    required this.startDate,
+  }) : super(key: key);
+
+  final int startDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 0, 0),
+      child: SizedBox(
+        height: 120,
+        child: FutureBuilder<List<Total>>(
+          future: DatabaseHelper.instance.getTotalByDate(startDate),
+          builder: (BuildContext context, AsyncSnapshot<List<Total>> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                  child: CircularProgressIndicator(
+                      color: Colors.greenAccent[400]));
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Text('Error loading expenses: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('無花費紀錄'));
+            }
+
+            final totalList = snapshot.data!;
+
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: totalList.length,
+              itemBuilder: (context, int index) {
+                final total = totalList[index];
+                return ExpenseRatio(total: total);
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -166,19 +180,28 @@ class Title extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    seeMoreText,
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      height: 1.2125,
-                      color: Colors.grey[700],
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          seeMoreText,
+                          style: GoogleFonts.inter(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 1.2125,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        Icon(
+                          seeMoreIcon,
+                          size: 14,
+                          color: Colors.grey[700],
+                        ),
+                      ],
                     ),
-                  ),
-                  Icon(
-                    seeMoreIcon,
-                    size: 14,
-                    color: Colors.grey[700],
+                    onTap: () {
+                      print("onTap");
+                    },
                   ),
                 ],
               ),
@@ -395,7 +418,8 @@ class _VerticalListState extends State<VerticalList> {
           .getExpensesByDate(DateFormat('yyyy-MM-dd').format(widget.date)),
       builder: (BuildContext context, AsyncSnapshot<List<Expense>> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(color: Colors.greenAccent[400]));
         } else if (snapshot.hasError) {
           return Center(
               child: Text('Error loading expenses: ${snapshot.error}'));

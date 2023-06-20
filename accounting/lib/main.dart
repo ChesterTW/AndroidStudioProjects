@@ -1,4 +1,5 @@
 import 'package:accounting/view/account_page.dart';
+import 'package:accounting/view/lauch_page.dart';
 import 'package:accounting/view/user_new_expense_page.dart';
 import 'package:accounting/view/home_page.dart';
 
@@ -13,7 +14,18 @@ void main() {
 
   initializeDateFormatting();
 
-  runApp(const MyApp());
+  runApp(const Init());
+}
+
+class Init extends StatelessWidget {
+  const Init({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: LaunchPage(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

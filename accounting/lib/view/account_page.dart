@@ -37,16 +37,21 @@ class _AccountPageState extends State<AccountPage> {
     showDialog(
         context: context,
         builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(color: Colors.greenAccent[400]),
           );
         });
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // 取得 StartDate 範圍內的花費，減去新的 固定餘額
+    int date = prefs.getInt("prefStartDate") ?? 1;
+    int sum = await DatabaseHelper.instance.getSumByDate(date);
+
     setState(() {
       /// 設置固定值、浮動值
       prefs.setInt("prefBalanceSetting", amount);
-      prefs.setInt("prefBalance", amount);
+      prefs.setInt("prefBalance", amount - sum);
     });
   }
 
@@ -54,8 +59,8 @@ class _AccountPageState extends State<AccountPage> {
     showDialog(
         context: context,
         builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(color: Colors.greenAccent[400]),
           );
         });
 
@@ -71,8 +76,8 @@ class _AccountPageState extends State<AccountPage> {
     showDialog(
         context: context,
         builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(color: Colors.greenAccent[400]),
           );
         });
 
@@ -85,30 +90,6 @@ class _AccountPageState extends State<AccountPage> {
       prefs.setInt("prefExpense", sum);
     });
   }
-
-  /*
-  setStartDate(int date) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      /// 設置固定值
-      prefs.setInt("prefStartDate", date);
-    });
-  }
-
-  setExpense(int date) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    int sum = await DatabaseHelper.instance.getSumByDate(date);
-
-    setState(() {
-      /// 設置固定值
-      prefs.setInt(
-          "prefBalance", (prefs.getInt("prefBalanceSetting") ?? 10000) - sum);
-      prefs.setInt("prefExpense", sum);
-    });
-  }
-
-   */
 
   SliverToBoxAdapter SystemSettingTile(BuildContext context) {
     return SliverToBoxAdapter(
