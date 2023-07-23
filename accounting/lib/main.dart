@@ -130,10 +130,18 @@ class _MyHomePageState extends State<MyHomePage> {
     bool hasResetBalance = prefs.getBool("hasResetBalance") ?? false;
     int startDate = prefs.getInt("prefStartDate") ?? 1;
 
-    // 判定今日是否要重置
+    /// 判定今日是否要重置
+    /// Param：hasResetBalance（Boolean），是否已重置過。
+    /// Param：startDate（Int），重置日期。
+    /// 若 餘額未重置過 && 今日為重置日，進入陳述式。
     if (!hasResetBalance && DateTime.now().day == startDate) {
       resetBalanceAndExpense();
       prefs.setBool("hasResetBalance", true);
+    }
+
+    /// 若 餘額重置過 && 今日非重置日，重置 hasResetBalance 為 false。
+    if (hasResetBalance && DateTime.now().day != startDate) {
+      prefs.setBool("hasResetBalance", false);
     }
 
     setState(() {

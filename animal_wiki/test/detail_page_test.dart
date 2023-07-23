@@ -1,6 +1,7 @@
 import 'package:animal_wiki/main.dart' as app;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 void main() {
   testWidgets("點擊「詳細」鈕，進入「詳細頁面」（detail_page），測試「愛心」是否作用。",
